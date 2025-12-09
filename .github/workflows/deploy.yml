@@ -4,9 +4,10 @@
 # notifies Discord, and deploys to Unraid after manual approval.
 #
 # Required secrets:
-#   UNRAID_HOST      - Unraid server IP (e.g., 192.168.1.100)
-#   UNRAID_SSH_KEY   - Private SSH key for root access
-#   DISCORD_WEBHOOK  - Discord webhook URL for notifications
+#   UNRAID_HOST       - Unraid Tailscale IP (e.g., 100.x.x.x)
+#   UNRAID_SSH_KEY    - Private SSH key for root access
+#   DISCORD_WEBHOOK   - Discord webhook URL for notifications
+#   TAILSCALE_AUTHKEY - Tailscale auth key (ephemeral, reusable)
 #
 # Required environment:
 #   production       - GitHub environment with required reviewers
@@ -99,6 +100,13 @@ jobs:
     environment: production
 
     steps:
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ""
+          oauth-secret: ""
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
