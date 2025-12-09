@@ -3,7 +3,7 @@ services:
     image: ghcr.io/cameronsjo/unraid-hello:${VERSION:-latest}
     container_name: unraid-hello
     ports:
-      - "3001:3000"
+      - "3003:3000"
     environment:
       - VERSION=${VERSION:-latest}
     restart: unless-stopped
